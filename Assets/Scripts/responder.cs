@@ -13,6 +13,11 @@ public class responder : MonoBehaviour
     public Text respostaC;
     public Text respostaD;
     public Text infoRespostas;
+    public Text displayContagem;
+
+    public float contagem = 10.0f;
+
+
 
     public string[] perguntas;
     public string[] alternativaA;
@@ -127,6 +132,35 @@ public class responder : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (contagem > 0f)
+        {
+            contagem -= Time.deltaTime;
+            displayContagem.text = contagem.ToString("F0");
+        }
+        else
+        {
+            media = 10 * (acertos / questoes);
+            notaFinal = Mathf.RoundToInt(media);
+
+
+            if (notaFinal > PlayerPrefs.GetInt("notaFinal" + idLevel.ToString()))
+            {
+
+                PlayerPrefs.SetInt("notaFinal" + idLevel.ToString(), notaFinal);
+                PlayerPrefs.SetInt("acertos" + idLevel.ToString(), (int)acertos);
+
+            }
+
+            PlayerPrefs.SetInt("notaFinalTemp" + idLevel.ToString(), notaFinal);
+            PlayerPrefs.SetInt("acertosTemp" + idLevel.ToString(), (int)acertos);
+
+
+
+            Application.LoadLevel("notaFinal");
+        }
+    }
 
 
 
@@ -134,5 +168,5 @@ public class responder : MonoBehaviour
 
 
 
-    
 }
+
